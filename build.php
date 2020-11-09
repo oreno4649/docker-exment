@@ -26,14 +26,13 @@ const IMGORE_DIRS = [
 const REPLACES = [
     'php_version' => 'replacePhpVersion',
     'apt_get_extend' => 'replaceAptGetExtend',
+    'php_volume_envfile' => 'setEnvIfDevelop',
 ];
-
 
 $buildBasePath = path_join(dirname(__FILE__), 'build');
 if(!file_exists($buildBasePath)){
     mkdir($buildBasePath);
 }
-
 
 foreach(PHP_VERSIONS as $phpVersion){
     foreach(DATABASES as $database){
@@ -123,7 +122,29 @@ EOT;
     return 'RUN apt-get install -y default-mysql-client && docker-php-ext-install pdo_mysql';
 }
 
+function setEnvIfDevelop($phpVersion, $database){
+    if(boolval(getArgOption('product'))){
+        return null;
+    }
+    return '- ./php/volumes/.env:/var/www/exment/.env';
+}
 
+
+
+function getArgOption($key, $default = null){
+    foreach($_SERVER['argv'] as $a){
+        $split = explode("=", trim($a, '-'));
+        if(count($split) < 2){
+            continue;
+        }
+
+        if($split[0] == $key){
+            return $split[1];
+        }
+    }
+
+    return $default;
+}
 
 /**
  * Join FilePath.

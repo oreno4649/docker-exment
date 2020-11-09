@@ -19,6 +19,8 @@ RUN pecl install sqlsrv && pecl install pdo_sqlsrv \
   && docker-php-ext-enable sqlsrv \
   && docker-php-ext-enable pdo_sqlsrv
 
+# copy php.ini
+COPY ./volumes/php.ini /usr/local/etc/php/php.ini
 
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -35,5 +37,23 @@ RUN chown -R www-data:www-data /var/www/exment \
   && chmod 755 -R /var/www/exment/bootstrap/cache
 
 # remove env file. because use volumes env file
-RUN rm /var/www/exment/.env
+RUN rm /var/www/exment/.env && php artisan passport:keys
 
+
+# Custom Input zone ----------------------------------------------------
+
+##### Please set composer require if need.
+#composer require pragmarx/google2fa
+#composer require simplesoftwareio/simple-qrcode=^2.0.0
+
+
+##### Please set env setting if need.
+## If you want to set value from docker env file, please read this.
+## https://qiita.com/katoosky/items/422c183cf5cabb789030
+# ENV DB_CONNECTION=mysql \
+#   DB_HOST=mysql \
+#   DB_DATABASE=exment_database \
+#   DB_USERNAME=exment_user \
+#   DB_PASSWORD=secret \
+#   APP_TIMEZONE=Asia/Tokyo
+#   APP_LOCALE=ja

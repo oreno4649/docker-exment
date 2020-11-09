@@ -1,13 +1,11 @@
 version: '3'
 services:
   web:
-    image: nginx:latest
+    build: ./web
     ports:
       - ${EXMENT_DOCKER_HTTP_PORTS-80}:80
     volumes:
-      - ./web/volumes/nginx.conf:/etc/nginx/conf.d/default.conf
       - www-data:/var/www/exment
-      
     env_file: .env
     depends_on:
       - php
@@ -15,13 +13,14 @@ services:
       - exment-network
     environment:
       - VIRTUAL_HOST=${EXMENT_DOCKER_FRONT_DOMAIN-localhost}
+      - EXMENT_DOCKER_PHP_HOST_NAME=${EXMENT_DOCKER_PHP_HOST_NAME-php}
 
   php:
     build: ./php
     volumes:
       - www-data:/var/www/exment
       - ./php/volumes/php.ini:/usr/local/etc/php/php.ini
-      - ./php/volumes/.env:/var/www/exment/.env
+      ${php_volume_envfile}
     env_file: .env
     networks:
       - exment-network
