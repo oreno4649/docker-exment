@@ -24,7 +24,6 @@ RUN rm -rf /var/www/exment/temp
 RUN COMPOSER_MEMORY_LIMIT=-1 composer require exceedone/exment
 
 RUN php artisan vendor:publish --provider="Exceedone\\Exment\\ExmentServiceProvider"
-RUN chown -R www-data:www-data /var/www/exment \
-  && chmod 755 -R /var/www/exment/storage \
+RUN chmod 755 -R /var/www/exment/storage \
   && chmod 755 -R /var/www/exment/bootstrap/cache
 
