@@ -14,16 +14,7 @@ RUN apt-get install -y default-mysql-client && docker-php-ext-install pdo_mysql
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-
 # install exment
 RUN mkdir /var/www/exment
 WORKDIR /var/www/exment
-RUN COMPOSER_MEMORY_LIMIT=-1 composer create-project laravel/laravel=${LARAVEL_VERSION} temp
-RUN cp -rp /var/www/exment/temp/* /var/www/exment/
-RUN rm -rf /var/www/exment/temp
-RUN COMPOSER_MEMORY_LIMIT=-1 composer require exceedone/exment
-
-RUN php artisan vendor:publish --provider="Exceedone\\Exment\\ExmentServiceProvider"
-RUN chmod 755 -R /var/www/exment/storage \
-  && chmod 755 -R /var/www/exment/bootstrap/cache
 
