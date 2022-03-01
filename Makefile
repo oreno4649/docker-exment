@@ -20,10 +20,10 @@ init:
 	@make down
 	#git clone git@github.com:oreno4649/exment-boilerplate.git
 	@make mysql-up
-	docker-compose -f docker-compose.yml exec php chown www-data:www-data -R .
-	docker-compose -f docker-compose.yml exec php composer install
-	docker-compose -f docker-compose.yml exec php cp .env.example .env
-	docker-compose -f docker-compose.yml exec php php artisan key:generate
+	docker-compose -f docker-compose.yml exec -T php chown www-data:www-data -R .
+	docker-compose -f docker-compose.yml exec -T php composer install
+	docker-compose -f docker-compose.yml exec -T php cp .env.example .env
+	docker-compose -f docker-compose.yml exec -T php php artisan key:generate
 test:
 	@make mysql-up
-	docker-compose exec php composer run exment:test:browser
+	docker-compose exec -T php composer run exment:test:browser
