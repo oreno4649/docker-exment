@@ -18,7 +18,7 @@ logs-watch:
 	docker-compose logs --follow
 init:
 	@make down
-	#git clone git@github.com:oreno4649/exment-boiler.git
+	#git clone git@github.com:oreno4649/exment-boilerplate.git
 	@make mysql-up
 	docker-compose  -f docker-compose.yml exec chown www-data:www-data -R .
 	docker-compose  -f docker-compose.yml exec php composer install
