@@ -1,0 +1,31 @@
+version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - ${EXMENT_DOCKER_HTTP_PORTS-80}:80
+    volumes:
+      - ./docker/web/volumes/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./exment-boiler:/var/www/exment
+    env_file: .env
+    depends_on:
+      - php
+    networks:
+      - exment-network
+    environment:
+      - VIRTUAL_HOST=${EXMENT_DOCKER_FRONT_DOMAIN-localhost}
+
+  php:
+    build: 
+      context: docker/php
+      args:
+        - PHP_VERSION=${EXMENT_DOCKER_PHP_VERSION}
+    volumes:
+      - ./exment-boiler:/var/www/exment
+      - ./docker/php/volumes/php.ini:/usr/local/etc/php/php.ini
+    env_file: .env
+    networks:
+      - exment-network
+
+networks:
+  exment-network:
