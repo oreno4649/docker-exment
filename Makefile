@@ -16,13 +16,13 @@ exec:
 	docker-compose  -f docker-compose.yml -f docker-compose.mysql.yml -f docker-compose.sqlsrv.yml -f docker-compose.mariadb.yml exec
 logs-watch:
 	docker-compose logs --follow
-init:
+mysql-init:
 	@make down
 	#git clone git@github.com:oreno4649/exment-boilerplate.git
 	@make mysql-up
 	docker-compose -f docker-compose.yml exec -T php chown www-data:www-data -R .
 	docker-compose -f docker-compose.yml exec -T php composer install
-	docker-compose -f docker-compose.yml exec -T php cp .env.example .env
+	docker-compose -f docker-compose.yml exec -T php cp .env.mysql .env
 	docker-compose -f docker-compose.yml exec -T php php artisan key:generate
 test:
 	@make mysql-up
