@@ -39,6 +39,7 @@ mariadb-init:
 sqlsrv-init:
 	@make down
 	@make sqlsrv-up
+	docker-compose -f docker-compose.sqlsrv.yml run -T sqlsrv-create-db
 	docker-compose -f docker-compose.yml exec -T php chown www-data:www-data -R .
 	docker-compose -f docker-compose.yml exec -T php composer install
 	docker-compose -f docker-compose.yml exec -T php cp .env.sqlsrv .env

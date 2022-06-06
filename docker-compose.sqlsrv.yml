@@ -24,8 +24,6 @@ services:
     networks:
       - exment-network
     env_file: .env
-    depends_on:
-      - sqlsrv
 
 networks:
   exment-network:
