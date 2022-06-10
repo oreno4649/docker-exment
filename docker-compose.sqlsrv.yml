@@ -2,7 +2,6 @@ version: '3'
 services:
   sqlsrv:
     build: docker/sqlsrv
-    image: mssql  
     ports:
       - ${EXMENT_DOCKER_SQLSRV_PORT-1433}:1433
     networks:
