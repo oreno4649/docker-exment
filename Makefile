@@ -22,7 +22,7 @@ mysql-init:
 	@make down
 	@make mysql-up
 	docker-compose -f docker-compose.yml exec -T php chown www-data:www-data -R .
-	docker-compose -f docker-compose.yml exec -T php composer install
+	docker-compose -f docker-compose.yml exec -T -e COMPOSER_PROCESS_TIMEOUT=600 php composer install
 	docker-compose -f docker-compose.yml exec -T php cp .env.mysql .env
 	docker-compose -f docker-compose.yml exec -T php php artisan key:generate
 	docker-compose -f docker-compose.yml exec -T php php artisan passport:key
@@ -31,7 +31,7 @@ mariadb-init:
 	@make down
 	@make mariadb-up
 	docker-compose -f docker-compose.yml exec -T php chown www-data:www-data -R .
-	docker-compose -f docker-compose.yml exec -T php composer install
+	docker-compose -f docker-compose.yml exec -T -e COMPOSER_PROCESS_TIMEOUT=600 php composer install
 	docker-compose -f docker-compose.yml exec -T php cp .env.mariadb .env
 	docker-compose -f docker-compose.yml exec -T php php artisan key:generate
 	docker-compose -f docker-compose.yml exec -T php php artisan passport:key
@@ -46,7 +46,7 @@ sqlsrv-init:
 	@make ps
 	@make logs
 	docker-compose -f docker-compose.yml exec -T php chown www-data:www-data -R .
-	docker-compose -f docker-compose.yml exec -T php composer install
+	docker-compose -f docker-compose.yml exec -T -e COMPOSER_PROCESS_TIMEOUT=600 php composer install
 	docker-compose -f docker-compose.yml exec -T php cp .env.sqlsrv .env
 	docker-compose -f docker-compose.yml exec -T php php artisan key:generate
 	docker-compose -f docker-compose.yml exec -T php php artisan passport:key
