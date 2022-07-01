@@ -41,6 +41,7 @@ sqlsrv-init:
 	@make sqlsrv-up
 	@make ps
 	@make logs
+	sleep 30
 	docker-compose -f docker-compose.sqlsrv.yml run -T sqlsrv-create-db
 	@make ps
 	@make logs
