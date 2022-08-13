@@ -3,8 +3,8 @@ ARG PHP_VERSION
 FROM php:${PHP_VERSION}-fpm
 
 # install php-ext
-RUN apt-get update && apt-get install -y git wget gnupg vim unzip libxml2-dev libpng-dev libzip-dev libonig-dev default-mysql-client\
-  && docker-php-ext-install mbstring dom gd zip pdo_mysql\
+RUN apt-get update && apt-get install -y git wget gnupg vim unzip libxml2-dev libpng-dev libzip-dev libonig-dev default-mysql-client libldap2-dev\
+  && docker-php-ext-install mbstring dom gd zip pdo_mysql ldap\
   && apt-get clean
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
