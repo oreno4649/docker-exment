@@ -7,11 +7,13 @@ RUN apt-get update && apt-get install -y git wget gnupg vim unzip libxml2-dev li
   && docker-php-ext-install mbstring dom gd zip pdo_mysql ldap\
   && apt-get clean
 
+# install pre sql server driver
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-  && curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | tee /etc/apt/sources.list.d/msprod.list \
+  && curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list \
   && apt-get update \
-  && apt-get install -y unixodbc-dev libgssapi-krb5-2 \
-  && ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools
+  && apt-get install -y odbcinst1debian2=2.3.7 unixodbc=2.3.7 odbcinst=2.3.7 unixodbc-dev=2.3.7 \
+  && apt-get install -y libgssapi-krb5-2 \
+  && ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools18
 
 # install sql server driver
 RUN pecl install sqlsrv && pecl install pdo_sqlsrv && docker-php-ext-enable sqlsrv && docker-php-ext-enable pdo_sqlsrv
