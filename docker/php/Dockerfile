@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y git wget gnupg vim unzip libxml2-dev li
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
   && curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | tee /etc/apt/sources.list.d/msprod.list \
   && apt-get update \
-  && apt-get install -y unixodbc-dev libgssapi-krb5-2 \
+  && apt-get install -y unixodbc-dev=2.3.7 unixodbc=2.3.7 odbcinst1debian2=2.3.7 odbcinst=2.3.7 libgssapi-krb5-2 \
   && ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools
 
 # install sql server driver
