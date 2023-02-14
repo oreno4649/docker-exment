@@ -13,7 +13,7 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
   && apt-get update \
   && apt-get install -y odbcinst1debian2=2.3.7 unixodbc=2.3.7 odbcinst=2.3.7 unixodbc-dev=2.3.7 \
   && apt-get install -y libgssapi-krb5-2 \
-  && ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools18
+  && ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools17
 
 # install sql server driver
 RUN pecl install sqlsrv && pecl install pdo_sqlsrv && docker-php-ext-enable sqlsrv && docker-php-ext-enable pdo_sqlsrv
