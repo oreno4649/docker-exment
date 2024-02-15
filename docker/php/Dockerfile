@@ -4,7 +4,7 @@ FROM php:${PHP_VERSION}-fpm
 
 # install php-ext
 RUN apt-get update && apt-get install -y git wget gnupg vim unzip libxml2-dev libpng-dev libzip-dev libonig-dev default-mysql-client libldap2-dev\
-  && docker-php-ext-install mbstring dom gd zip pdo_mysql ldap\
+  && docker-php-ext-install mbstring dom gd zip pdo_mysql ftp ldap\
   && apt-get clean
 
 # install pre sql server driver
