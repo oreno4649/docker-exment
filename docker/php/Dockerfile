@@ -17,6 +17,9 @@ RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor
 # install sql server driver
 RUN pecl install sqlsrv-5.12.0 && pecl install pdo_sqlsrv-5.12.0 && docker-php-ext-enable sqlsrv && docker-php-ext-enable pdo_sqlsrv
 
+# install PCOV for fast code coverage (disabled by default; enabled per-run via -d pcov.enabled=1)
+RUN pecl install pcov && docker-php-ext-enable pcov
+
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

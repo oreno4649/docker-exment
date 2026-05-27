@@ -50,3 +50,33 @@ sqlsrv-init:
 	docker compose -f docker-compose.yml exec -T php cp .env.sqlsrv .env
 	docker compose -f docker-compose.yml exec -T php php artisan key:generate
 	docker compose -f docker-compose.yml exec -T php php artisan passport:key --force
+
+# --- Coverage targets -------------------------------------------------------
+# COV_DIR: where per-suite *.cov dumps land (inside the container path).
+COV_DIR=storage/logs/coverage
+EXMENT_TESTS=./vendor/exceedone/exment/tests
+
+# Run unit tests with --coverage-php so the merge step can pick them up.
+test-coverage-unit:
+	docker compose -f docker-compose.yml exec -T -e COMPOSER_PROCESS_TIMEOUT=0 php \
+	  bash -c "mkdir -p $(COV_DIR) && php artisan exment:inittest --yes && php -d memory_limit=1024M vendor/bin/phpunit $(EXMENT_TESTS)/Unit --coverage-php $(COV_DIR)/unit.cov"
+
+# Run feature tests with --coverage-php.
+test-coverage-feature:
+	docker compose -f docker-compose.yml exec -T -e COMPOSER_PROCESS_TIMEOUT=0 php \
+	  bash -c "mkdir -p $(COV_DIR) && php artisan exment:inittest --yes && php -d memory_limit=1024M vendor/bin/phpunit $(EXMENT_TESTS)/Feature --coverage-php $(COV_DIR)/feature.cov"
+
+# Merge .cov files and emit clover/html/text reports under $(COV_DIR)/merged/.
+test-coverage-merge:
+	docker compose -f docker-compose.yml exec -T php php -d memory_limit=2048M /usr/local/bin/merge-coverage.php
+
+# One-shot: unit + feature + merge.
+test-coverage:
+	@make test-coverage-unit
+	@make test-coverage-feature
+	@make test-coverage-merge
+
+# Browser tests segfault under PCOV; run them with pcov.enabled=0 and no coverage.
+test-browser:
+	docker compose -f docker-compose.yml exec -T -e COMPOSER_PROCESS_TIMEOUT=0 php \
+	  bash -c "php artisan exment:inittest --yes && php -d pcov.enabled=0 vendor/bin/phpunit $(EXMENT_TESTS)/Browser --no-coverage"

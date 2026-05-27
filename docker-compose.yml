@@ -23,6 +23,7 @@ services:
       - ./exment-boilerplate:/var/www/exment
       - ./docker/php/volumes/php.ini:/usr/local/etc/php/php.ini
       - ./docker/php/volumes/mysql-client.cnf:/etc/mysql/conf.d/client.cnf
+      - ./docker/php/volumes/merge-coverage.php:/usr/local/bin/merge-coverage.php:ro
     env_file: .env
     networks:
       - exment-network
